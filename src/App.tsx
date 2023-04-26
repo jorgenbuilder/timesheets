@@ -79,7 +79,7 @@ function Timer() {
 function Idle() {
   const { start } = useStore();
 
-  const { isLoading, error, data } = useQuery("logs", getLogs);
+  const { data } = useQuery("logs", getLogs);
 
   return (
     <div>
