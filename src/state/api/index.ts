@@ -1,10 +1,11 @@
-import { Doc, delDoc, initJuno, listDocs, setDoc } from "@junobuild/core";
+import { Doc, delDoc, listDocs, setDoc } from "@junobuild/core";
 import { ActiveTimer, Log } from "../models/timesheets";
 import { nanoid } from "nanoid";
 
-await initJuno({
-  satelliteId: "56vi6-hiaaa-aaaal-ab5la-cai",
-});
+// David, top level await?
+// await initJuno({
+//   satelliteId: "56vi6-hiaaa-aaaal-ab5la-cai",
+// });
 
 let activeTimer: Doc<ActiveTimer> | undefined;
 
