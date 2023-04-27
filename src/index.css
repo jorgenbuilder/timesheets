@@ -85,9 +85,13 @@ pre {
   white-space: nowrap;
 }
 
+.log-row > *:nth-child(1),
 .log-row > *:nth-child(2) {
+  display: flex;
+  gap: 5px;
+  align-items: center;
   font-family: monospace;
-  font-size: 1.3em;
+  font-size: 1.2em;
 }
 
 .log-row > *:nth-child(3) {

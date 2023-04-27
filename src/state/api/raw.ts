@@ -54,23 +54,25 @@ export async function setActiveTimerLabel(label: string): Promise<void> {
 }
 
 // Ends the active timer by deleting the active timer doc and creating a log doc.
-export async function endActiveTimer(): Promise<void> {
+export async function endActiveTimer(): Promise<Doc<Log>> {
   if (!activeTimer) throw new Error("No active timer to end.");
   await delDoc<ActiveTimer>({
     collection: "timesheet-timers",
     doc: activeTimer,
   });
-  await setDoc<Log>({
+  const log = await setDoc<Log>({
     collection: "timesheet-logs",
     doc: {
       ...activeTimer,
       data: {
         ...activeTimer.data,
+        in: new Date(activeTimer.data.in), // Juno returns a string instead of a date object.
         out: new Date(),
       },
     },
   });
   activeTimer = undefined;
+  return log;
 }
 
 // Returns all logs.

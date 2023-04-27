@@ -1,13 +1,12 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { createActiveTimer, endActiveTimer, getActiveTimer } from "../api/raw";
+import { endActiveTimer, getActiveTimer } from "../api/raw";
 import { ActiveTimer } from "../models/timesheets";
 import { initJuno } from "@junobuild/core";
 
 interface Store {
   state: { idle: null } | { running: ActiveTimer };
   init: () => Promise<void>;
-  start: () => Promise<void>;
   end: () => Promise<void>;
 }
 
@@ -23,13 +22,6 @@ export const useStore = create<Store>()(
       if (active) {
         set({ state: { running: active } });
       }
-    },
-
-    async start() {
-      const { state } = get();
-      if ("running" in state) return;
-      const timer = await createActiveTimer();
-      set({ state: { running: timer } });
     },
 
     async end() {
