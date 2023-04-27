@@ -2,11 +2,6 @@ import { Doc, delDoc, listDocs, setDoc } from "@junobuild/core";
 import { ActiveTimer, Log } from "../models/timesheets";
 import { nanoid } from "nanoid";
 
-// David, top level await?
-// await initJuno({
-//   satelliteId: "56vi6-hiaaa-aaaal-ab5la-cai",
-// });
-
 let activeTimer: Doc<ActiveTimer> | undefined;
 
 /// Returns an active timer if one exists.

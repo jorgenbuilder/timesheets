@@ -5,15 +5,14 @@ import {
   useRef,
   useState,
 } from "react";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useStore } from "./state/stores/timers";
 import { convertMilliseconds } from "./state/logic/time";
-import { deleteLog, getLogs, setActiveTimerLabel } from "./state/api";
+import { setActiveTimerLabel } from "./state/api/raw";
+import { queryClient, useDeleteLog, useLogsQuery } from "./state/api/hooks";
 import { Doc } from "@junobuild/core";
 import { Log } from "./state/models/timesheets";
-
-const queryClient = new QueryClient();
 
 function App() {
   const { init } = useStore();
@@ -79,7 +78,7 @@ function Timer() {
 function Idle() {
   const { start } = useStore();
 
-  const { data } = useQuery("logs", getLogs);
+  const { data } = useLogsQuery();
 
   return (
     <div>
@@ -100,10 +99,9 @@ function LogRow({ doc }: { doc: Doc<Log> }) {
   const { hours, minutes, seconds } = convertMilliseconds(
     doc.data.out.getTime() - doc.data.in.getTime()
   );
+  const deleteLog = useDeleteLog();
   const handleDelete = useCallback(() => {
-    console.log("delete", doc);
-    deleteLog(doc);
-    queryClient.invalidateQueries("logs");
+    deleteLog.mutate(doc);
   }, []);
   return (
     <div className="log-row">
