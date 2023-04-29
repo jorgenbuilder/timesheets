@@ -116,9 +116,12 @@ function Idle() {
           </div>
         ))}
         <div>
+          <br />
           Total: {String(total.hours).padStart(2, "0")}:
           {String(total.minutes).padStart(2, "0")}:
           {String(total.seconds).padStart(2, "0")}
+          &nbsp;&nbsp; ${total.hours * 150} / $50,000 &nbsp;&nbsp;{" "}
+          {Math.floor((100 * total.hours * 150) / 50_000)}%
         </div>
       </div>
     </div>
