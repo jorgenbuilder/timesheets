@@ -100,3 +100,11 @@ export async function deleteLog(doc: Doc<Log>): Promise<void> {
     doc,
   });
 }
+
+// Updates a log.
+export async function updateLog(doc: Doc<Log>): Promise<void> {
+  await setDoc<Log>({
+    collection: "timesheet-logs",
+    doc,
+  });
+}

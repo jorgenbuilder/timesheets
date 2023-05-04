@@ -5,4 +5,5 @@ export interface ActiveTimer {
 
 export interface Log extends ActiveTimer {
   out: Date;
+  rate?: number;
 }

@@ -5,6 +5,7 @@ import {
   endActiveTimer,
   getActiveTimer,
   getLogs,
+  updateLog,
 } from "./raw";
 import { Doc } from "@junobuild/core";
 import { ActiveTimer, Log } from "../models/timesheets";
@@ -133,6 +134,29 @@ export function useDeleteLog() {
     // Always refetch after error or success.
     onSettled() {
       queryClient.invalidateQueries("logs");
+    },
+  });
+}
+
+export function useSaveLog() {
+  return useMutation({
+    mutationFn: updateLog,
+
+    // Using onMutate to provide optimistic updates.
+    async onMutate(updatedLog) {
+      await queryClient.cancelQueries("logs");
+      const existingLogs = queryClient.getQueryData<Doc<Log>[]>("logs");
+      const updatedLogs = existingLogs?.map((log) =>
+        log.key === updatedLog.key ? updatedLog : log
+      );
+      queryClient.setQueryData("logs", updatedLogs);
+      return { updatedLog, existingLogs };
+    },
+
+    // Rollback optimistic updates if a failure occurs.
+    onError(err, updatedLog, context) {
+      console.error(`Error updating log ${updatedLog.key}`, err);
+      queryClient.setQueryData("logs", context?.existingLogs);
     },
   });
 }
